@@ -23,13 +23,13 @@ export const Navbar: React.FC<Props> = ({
     <header className="sbr-topbar no-print">
       <div className="sbr-topbar-inner">
         {/* Brand Group */}
-        <div className="sbr-brand">
+        <div className="sbr-brand" onClick={() => onSelectTab('billing')}>
           <div className="sbr-logo-badge">
             S.B.R
           </div>
           <div className="sbr-title-group">
             <h1>S.B.R. CHEMICALS & OILS</h1>
-            <p>Wholesale & Retail Supplier &bull; Saravanampatti, Coimbatore &bull; GST Billing</p>
+            <p>Industrial Chemicals & Lubricant Oils &bull; Coimbatore</p>
           </div>
         </div>
 
@@ -69,7 +69,7 @@ export const Navbar: React.FC<Props> = ({
         </nav>
 
         {/* Right Status & Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+        <div className="sbr-status-group" style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
           {/* Cloud Badge */}
           <div
             onClick={onOpenSettings}
@@ -83,13 +83,14 @@ export const Navbar: React.FC<Props> = ({
               fontSize: '0.725rem',
               fontWeight: 600,
               cursor: 'pointer',
-              background: supabaseConnected ? '#f0fdf4' : '#fffbeb',
-              border: `1px solid ${supabaseConnected ? '#bbf7d0' : '#fde68a'}`,
-              color: supabaseConnected ? '#166534' : '#b45309'
+              background: supabaseConnected ? '#f0fdf4' : '#faf6ee',
+              border: `1px solid ${supabaseConnected ? '#bbf7d0' : '#e7dfce'}`,
+              color: supabaseConnected ? '#15803d' : '#8c6507',
+              transition: 'all 0.15s ease'
             }}
           >
             {supabaseConnected ? <Cloud size={13} /> : <CloudOff size={13} />}
-            <span>{supabaseConnected ? 'Cloud Sync' : 'Local Mode'}</span>
+            <span>{supabaseConnected ? 'Cloud Sync' : 'Local'}</span>
           </div>
 
           {/* Settings Button */}
@@ -100,13 +101,15 @@ export const Navbar: React.FC<Props> = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '32px',
-              height: '32px',
-              borderRadius: '6px',
-              background: '#f1f5f9',
-              border: '1px solid #cbd5e1',
-              color: '#334155',
-              cursor: 'pointer'
+              width: '34px',
+              height: '34px',
+              borderRadius: '8px',
+              background: '#ffffff',
+              border: '1px solid #e7dfce',
+              color: '#44403c',
+              cursor: 'pointer',
+              boxShadow: '0 1px 2px rgba(44, 38, 30, 0.05)',
+              transition: 'all 0.15s ease'
             }}
             title="Company, Bank & Cloud Settings"
           >
@@ -120,9 +123,9 @@ export const Navbar: React.FC<Props> = ({
               alignItems: 'center',
               gap: '0.5rem',
               paddingLeft: '0.5rem',
-              borderLeft: '1px solid #e2e8f0'
+              borderLeft: '1px solid #e7dfce'
             }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#334155' }}>
+              <span style={{ fontSize: '0.775rem', fontWeight: 700, color: '#44403c' }}>
                 {userSession.username}
               </span>
               <button
@@ -139,7 +142,7 @@ export const Navbar: React.FC<Props> = ({
                 }}
                 title="Logout"
               >
-                <LogOut size={15} />
+                <LogOut size={16} />
               </button>
             </div>
           )}

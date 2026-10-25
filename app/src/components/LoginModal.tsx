@@ -69,30 +69,32 @@ export const LoginModal: React.FC<Props> = ({ onLogin, companyProfile }) => {
     <div style={{
       position: 'fixed',
       inset: 0,
-      background: 'radial-gradient(ellipse at top, #1e293b 0%, #0f172a 100%)',
+      background: 'radial-gradient(ellipse at 50% 25%, #2c221b 0%, #140f0c 100%)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       zIndex: 9999,
-      padding: '1.25rem',
+      padding: '1rem',
       fontFamily: 'Inter, system-ui, -apple-system, sans-serif'
     }}>
       <div style={{
         width: '100%',
-        maxWidth: '430px',
+        maxWidth: '420px',
         background: '#ffffff',
-        borderRadius: '16px',
-        boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08)',
+        borderRadius: '14px',
+        border: '1px solid #e7dfce',
+        boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(212, 175, 55, 0.15)',
         overflow: 'hidden',
-        animation: 'fadeInScale 0.25s ease-out'
+        animation: 'fadeInScale 0.22s ease-out'
       }}>
         {/* Header Ribbon */}
         <div style={{
-          background: 'linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%)',
-          padding: '2rem 1.75rem 1.75rem',
+          background: 'linear-gradient(135deg, #881337 0%, #70102d 100%)',
+          padding: '1.85rem 1.5rem 1.6rem',
           color: '#ffffff',
           textAlign: 'center',
-          position: 'relative'
+          position: 'relative',
+          borderBottom: '2px solid #b8860b'
         }}>
           {/* Logo Badge */}
           <div style={{
@@ -101,11 +103,11 @@ export const LoginModal: React.FC<Props> = ({ onLogin, companyProfile }) => {
             justifyContent: 'center',
             width: '56px',
             height: '56px',
-            borderRadius: '14px',
+            borderRadius: '12px',
             background: 'rgba(255, 255, 255, 0.12)',
-            border: '1.5px solid rgba(255, 255, 255, 0.25)',
-            marginBottom: '0.85rem',
-            boxShadow: '0 8px 16px rgba(0, 0, 0, 0.25)',
+            border: '1.5px solid rgba(212, 175, 55, 0.6)',
+            marginBottom: '0.75rem',
+            boxShadow: '0 8px 18px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.35)',
             backdropFilter: 'blur(4px)'
           }}>
             <span style={{
@@ -120,17 +122,17 @@ export const LoginModal: React.FC<Props> = ({ onLogin, companyProfile }) => {
           </div>
 
           <h2 style={{
-            fontSize: '1.35rem',
+            fontSize: '1.3rem',
             fontWeight: 800,
             letterSpacing: '0.04em',
-            margin: '0 0 0.25rem 0',
+            margin: '0 0 0.2rem 0',
             textTransform: 'uppercase'
           }}>
             S.B.R. CHEMICALS & OILS
           </h2>
           <p style={{
-            fontSize: '0.78rem',
-            color: 'rgba(254, 226, 226, 0.9)',
+            fontSize: '0.75rem',
+            color: 'rgba(254, 226, 226, 0.92)',
             margin: 0,
             fontWeight: 500,
             letterSpacing: '0.02em'
@@ -143,21 +145,21 @@ export const LoginModal: React.FC<Props> = ({ onLogin, companyProfile }) => {
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          padding: '0.5rem',
-          background: '#f8fafc',
-          borderBottom: '1px solid #e2e8f0',
-          gap: '0.5rem'
+          padding: '0.45rem',
+          background: '#faf7f2',
+          borderBottom: '1px solid #e7dfce',
+          gap: '0.45rem'
         }}>
           <button
             type="button"
             onClick={() => handleRoleSwitch('Admin')}
             style={{
-              padding: '0.75rem 0.5rem',
+              padding: '0.7rem 0.5rem',
               borderRadius: '8px',
-              border: role === 'Admin' ? '1px solid #e2e8f0' : '1px solid transparent',
+              border: role === 'Admin' ? '1px solid #e7dfce' : '1px solid transparent',
               background: role === 'Admin' ? '#ffffff' : 'transparent',
-              color: role === 'Admin' ? '#991b1b' : '#64748b',
-              boxShadow: role === 'Admin' ? '0 2px 4px rgba(0, 0, 0, 0.05)' : 'none',
+              color: role === 'Admin' ? '#881337' : '#78716c',
+              boxShadow: role === 'Admin' ? '0 2px 5px rgba(44, 38, 30, 0.08)' : 'none',
               fontWeight: 700,
               fontSize: '0.825rem',
               cursor: 'pointer',
@@ -175,12 +177,12 @@ export const LoginModal: React.FC<Props> = ({ onLogin, companyProfile }) => {
             type="button"
             onClick={() => handleRoleSwitch('Staff')}
             style={{
-              padding: '0.75rem 0.5rem',
+              padding: '0.7rem 0.5rem',
               borderRadius: '8px',
-              border: role === 'Staff' ? '1px solid #e2e8f0' : '1px solid transparent',
+              border: role === 'Staff' ? '1px solid #e7dfce' : '1px solid transparent',
               background: role === 'Staff' ? '#ffffff' : 'transparent',
-              color: role === 'Staff' ? '#0f766e' : '#64748b',
-              boxShadow: role === 'Staff' ? '0 2px 4px rgba(0, 0, 0, 0.05)' : 'none',
+              color: role === 'Staff' ? '#0f766e' : '#78716c',
+              boxShadow: role === 'Staff' ? '0 2px 5px rgba(44, 38, 30, 0.08)' : 'none',
               fontWeight: 700,
               fontSize: '0.825rem',
               cursor: 'pointer',
@@ -196,14 +198,14 @@ export const LoginModal: React.FC<Props> = ({ onLogin, companyProfile }) => {
         </div>
 
         {/* Form Body */}
-        <div style={{ padding: '1.75rem 1.75rem 2rem' }}>
+        <div style={{ padding: '1.65rem 1.65rem 1.85rem' }}>
           <form onSubmit={handleLoginSubmit}>
-            <div style={{ marginBottom: '1.25rem' }}>
+            <div style={{ marginBottom: '1.15rem' }}>
               <label style={{
                 display: 'block',
                 fontSize: '0.8rem',
                 fontWeight: 600,
-                color: '#334155',
+                color: '#44403c',
                 marginBottom: '0.4rem'
               }}>
                 Username / Login ID
@@ -214,7 +216,7 @@ export const LoginModal: React.FC<Props> = ({ onLogin, companyProfile }) => {
                   left: '0.85rem',
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  color: '#94a3b8'
+                  color: '#a8a29e'
                 }} />
                 <input
                   type="text"
@@ -223,34 +225,35 @@ export const LoginModal: React.FC<Props> = ({ onLogin, companyProfile }) => {
                   placeholder={role === 'Admin' ? 'admin' : 'staff'}
                   style={{
                     width: '100%',
-                    padding: '0.7rem 0.85rem 0.7rem 2.4rem',
-                    border: '1px solid #cbd5e1',
+                    padding: '0.68rem 0.85rem 0.68rem 2.4rem',
+                    border: '1px solid #d6d3d1',
                     borderRadius: '8px',
                     fontSize: '0.875rem',
                     outline: 'none',
                     boxSizing: 'border-box',
+                    background: '#ffffff',
                     transition: 'border-color 0.15s ease, box-shadow 0.15s ease'
                   }}
                   onFocus={e => {
-                    e.currentTarget.style.borderColor = role === 'Admin' ? '#991b1b' : '#0f766e';
+                    e.currentTarget.style.borderColor = role === 'Admin' ? '#881337' : '#0f766e';
                     e.currentTarget.style.boxShadow = role === 'Admin'
-                      ? '0 0 0 3px rgba(153, 27, 27, 0.12)'
+                      ? '0 0 0 3px rgba(136, 19, 55, 0.12)'
                       : '0 0 0 3px rgba(15, 118, 110, 0.12)';
                   }}
                   onBlur={e => {
-                    e.currentTarget.style.borderColor = '#cbd5e1';
+                    e.currentTarget.style.borderColor = '#d6d3d1';
                     e.currentTarget.style.boxShadow = 'none';
                   }}
                 />
               </div>
             </div>
 
-            <div style={{ marginBottom: '1.5rem' }}>
+            <div style={{ marginBottom: '1.4rem' }}>
               <label style={{
                 display: 'block',
                 fontSize: '0.8rem',
                 fontWeight: 600,
-                color: '#334155',
+                color: '#44403c',
                 marginBottom: '0.4rem'
               }}>
                 {role === 'Admin' ? 'Admin Password' : 'Staff PIN'}
@@ -261,7 +264,7 @@ export const LoginModal: React.FC<Props> = ({ onLogin, companyProfile }) => {
                   left: '0.85rem',
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  color: '#94a3b8'
+                  color: '#a8a29e'
                 }} />
                 <input
                   type="password"
@@ -271,26 +274,27 @@ export const LoginModal: React.FC<Props> = ({ onLogin, companyProfile }) => {
                   autoFocus
                   style={{
                     width: '100%',
-                    padding: '0.7rem 0.85rem 0.7rem 2.4rem',
-                    border: error ? '1px solid #dc2626' : '1px solid #cbd5e1',
+                    padding: '0.68rem 0.85rem 0.68rem 2.4rem',
+                    border: error ? '1px solid #dc2626' : '1px solid #d6d3d1',
                     borderRadius: '8px',
                     fontSize: '0.875rem',
                     letterSpacing: '0.12em',
                     outline: 'none',
                     boxSizing: 'border-box',
+                    background: '#ffffff',
                     transition: 'border-color 0.15s ease, box-shadow 0.15s ease'
                   }}
                   onFocus={e => {
                     if (!error) {
-                      e.currentTarget.style.borderColor = role === 'Admin' ? '#991b1b' : '#0f766e';
+                      e.currentTarget.style.borderColor = role === 'Admin' ? '#881337' : '#0f766e';
                       e.currentTarget.style.boxShadow = role === 'Admin'
-                        ? '0 0 0 3px rgba(153, 27, 27, 0.12)'
+                        ? '0 0 0 3px rgba(136, 19, 55, 0.12)'
                         : '0 0 0 3px rgba(15, 118, 110, 0.12)';
                     }
                   }}
                   onBlur={e => {
                     if (!error) {
-                      e.currentTarget.style.borderColor = '#cbd5e1';
+                      e.currentTarget.style.borderColor = '#d6d3d1';
                       e.currentTarget.style.boxShadow = 'none';
                     }
                   }}
@@ -301,7 +305,7 @@ export const LoginModal: React.FC<Props> = ({ onLogin, companyProfile }) => {
                 <div style={{
                   color: '#dc2626',
                   fontSize: '0.775rem',
-                  marginTop: '0.5rem',
+                  marginTop: '0.45rem',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.4rem',
@@ -317,19 +321,19 @@ export const LoginModal: React.FC<Props> = ({ onLogin, companyProfile }) => {
               disabled={isSubmitting}
               style={{
                 width: '100%',
-                padding: '0.8rem',
+                padding: '0.75rem',
                 background: role === 'Admin'
-                  ? 'linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%)'
+                  ? 'linear-gradient(135deg, #881337 0%, #70102d 100%)'
                   : 'linear-gradient(135deg, #0f766e 0%, #115e59 100%)',
                 color: '#ffffff',
-                border: 'none',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
                 borderRadius: '8px',
                 fontWeight: 700,
                 fontSize: '0.9rem',
                 cursor: 'pointer',
                 boxShadow: role === 'Admin'
-                  ? '0 4px 12px rgba(153, 27, 27, 0.3)'
-                  : '0 4px 12px rgba(15, 118, 110, 0.3)',
+                  ? '0 4px 14px rgba(136, 19, 55, 0.35)'
+                  : '0 4px 14px rgba(15, 118, 110, 0.35)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -345,10 +349,11 @@ export const LoginModal: React.FC<Props> = ({ onLogin, companyProfile }) => {
 
           {/* Secure session note */}
           <div style={{
-            marginTop: '1.75rem',
+            marginTop: '1.65rem',
             textAlign: 'center',
             fontSize: '0.72rem',
-            color: '#94a3b8'
+            color: '#a8a29e',
+            letterSpacing: '0.02em'
           }}>
             Authorized Personnel Only &bull; S.B.R. Chemicals & Oils
           </div>

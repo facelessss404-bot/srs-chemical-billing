@@ -107,6 +107,8 @@ export interface CompanyProfile {
   invoice_prefix: string;
   starting_invoice_no: number;
   terms: string;
+  admin_password?: string;
+  staff_pin?: string;
 }
 
 export interface SupabaseConfig {

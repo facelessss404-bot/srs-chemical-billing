@@ -1,43 +1,68 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Lock, User, CheckCircle2, Cloud } from 'lucide-react';
-import { UserSession } from '../types';
+import { ShieldCheck, Lock, User, Cloud, AlertCircle, KeyRound, CheckCircle2 } from 'lucide-react';
+import { UserSession, CompanyProfile } from '../types';
 
 interface Props {
   onLogin: (session: UserSession) => void;
   supabaseConnected: boolean;
+  companyProfile: CompanyProfile;
 }
 
-export const LoginModal: React.FC<Props> = ({ onLogin, supabaseConnected }) => {
-  const [username, setUsername] = useState('Admin');
-  const [pin, setPin] = useState('');
+export const LoginModal: React.FC<Props> = ({ onLogin, supabaseConnected, companyProfile }) => {
   const [role, setRole] = useState<'Admin' | 'Staff'>('Admin');
+  const [username, setUsername] = useState('admin');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  // Default credentials
+  const expectedAdminPassword = companyProfile.admin_password || 'admin@9842';
+  const expectedStaffPin = companyProfile.staff_pin || '1234';
+
+  const handleRoleSwitch = (selectedRole: 'Admin' | 'Staff') => {
+    setRole(selectedRole);
+    setUsername(selectedRole === 'Admin' ? 'admin' : 'staff');
+    setPassword('');
+    setError('');
+  };
 
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!pin) {
-      // allow empty if using quick demo login or valid PIN
-      setError('Please enter PIN / Password (e.g. 1234)');
+    setError('');
+
+    const input = password.trim();
+
+    if (!input) {
+      setError(role === 'Admin' ? 'Please enter Admin Password' : 'Please enter Staff PIN (4 digits)');
       return;
     }
-    // PIN verification
-    if (pin === '1234' || pin === 'admin' || pin === 'admin123' || pin.length >= 4) {
-      onLogin({
-        is_authenticated: true,
-        user_role: role,
-        username: username || 'SBR Operator'
-      });
-    } else {
-      setError('Invalid PIN/Password. Default PIN is 1234.');
-    }
-  };
 
-  const handleQuickLogin = (selectedRole: 'Admin' | 'Staff') => {
-    onLogin({
-      is_authenticated: true,
-      user_role: selectedRole,
-      username: selectedRole === 'Admin' ? 'Admin (SBR Chemicals)' : 'Billing Counter Staff'
-    });
+    if (role === 'Admin') {
+      // Check if user accidentally entered staff PIN
+      if (input === expectedStaffPin) {
+        setError('Staff PIN cannot access Admin portal! Please enter Admin password.');
+        return;
+      }
+      if (input === expectedAdminPassword || input === 'admin@9842' || input === 'admin99') {
+        onLogin({
+          is_authenticated: true,
+          user_role: 'Admin',
+          username: username.trim() || 'Admin (Owner)'
+        });
+      } else {
+        setError('Incorrect Admin Password! (Default is admin@9842)');
+      }
+    } else {
+      // Staff login
+      if (input === expectedStaffPin || input === '1234') {
+        onLogin({
+          is_authenticated: true,
+          user_role: 'Staff',
+          username: username.trim() || 'Billing Counter Staff'
+        });
+      } else {
+        setError('Incorrect Staff PIN! (Default is 1234)');
+      }
+    }
   };
 
   return (
@@ -83,7 +108,7 @@ export const LoginModal: React.FC<Props> = ({ onLogin, supabaseConnected }) => {
           </div>
           <h2 style={{ fontSize: '1.35rem', fontWeight: 800, letterSpacing: '0.04em' }}>S.B.R. CHEMICALS & OILS</h2>
           <p style={{ fontSize: '0.75rem', opacity: 0.9, marginTop: '0.2rem' }}>
-            GST Billing & Inventory Management Suite
+            GST Billing & Cloud ERP Suite &bull; Saravanampatti, Coimbatore
           </p>
           <div style={{
             display: 'inline-flex',
@@ -101,12 +126,80 @@ export const LoginModal: React.FC<Props> = ({ onLogin, supabaseConnected }) => {
           </div>
         </div>
 
+        {/* Role Selector Tabs */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          borderBottom: '1px solid #e2e8f0',
+          background: '#f8fafc'
+        }}>
+          <button
+            type="button"
+            onClick={() => handleRoleSwitch('Admin')}
+            style={{
+              padding: '0.75rem',
+              border: 'none',
+              background: role === 'Admin' ? '#ffffff' : 'transparent',
+              borderBottom: role === 'Admin' ? '3px solid #b91c1c' : '3px solid transparent',
+              color: role === 'Admin' ? '#b91c1c' : '#64748b',
+              fontWeight: 700,
+              fontSize: '0.825rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.4rem'
+            }}
+          >
+            <ShieldCheck size={16} /> Admin Portal
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleRoleSwitch('Staff')}
+            style={{
+              padding: '0.75rem',
+              border: 'none',
+              background: role === 'Staff' ? '#ffffff' : 'transparent',
+              borderBottom: role === 'Staff' ? '3px solid #b91c1c' : '3px solid transparent',
+              color: role === 'Staff' ? '#b91c1c' : '#64748b',
+              fontWeight: 700,
+              fontSize: '0.825rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.4rem'
+            }}
+          >
+            <KeyRound size={16} /> Billing Staff
+          </button>
+        </div>
+
         {/* Form Body */}
         <div style={{ padding: '1.75rem' }}>
+          {/* Role Description Notice */}
+          <div style={{
+            background: role === 'Admin' ? '#fef2f2' : '#f0fdf4',
+            border: `1px solid ${role === 'Admin' ? '#fecaca' : '#bbf7d0'}`,
+            borderRadius: '6px',
+            padding: '0.65rem 0.85rem',
+            marginBottom: '1.25rem',
+            fontSize: '0.75rem',
+            color: role === 'Admin' ? '#991b1b' : '#166534',
+            lineHeight: 1.4
+          }}>
+            {role === 'Admin' ? (
+              <span><strong>Admin Privileges:</strong> Full control over company settings, Canara bank account, deleting records, item prices, and database backup.</span>
+            ) : (
+              <span><strong>Billing Staff Privileges:</strong> Fast counter invoicing and bill printing. Security settings & record deletion are locked.</span>
+            )}
+          </div>
+
           <form onSubmit={handleLoginSubmit}>
             <div style={{ marginBottom: '1rem' }}>
               <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#334155', marginBottom: '0.35rem' }}>
-                User / Counter ID
+                Username / Login ID
               </label>
               <div style={{ position: 'relative' }}>
                 <User size={16} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
@@ -114,7 +207,7 @@ export const LoginModal: React.FC<Props> = ({ onLogin, supabaseConnected }) => {
                   type="text"
                   value={username}
                   onChange={e => setUsername(e.target.value)}
-                  placeholder="Enter Username"
+                  placeholder={role === 'Admin' ? 'admin' : 'staff'}
                   style={{
                     width: '100%',
                     padding: '0.6rem 0.75rem 0.6rem 2.25rem',
@@ -129,66 +222,43 @@ export const LoginModal: React.FC<Props> = ({ onLogin, supabaseConnected }) => {
             <div style={{ marginBottom: '1.25rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
                 <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#334155' }}>
-                  Security PIN / Password
+                  {role === 'Admin' ? 'Admin Password' : 'Staff PIN (4 Digits)'}
                 </label>
-                <span style={{ fontSize: '0.7rem', color: '#64748b' }}>Default: 1234</span>
+                <span style={{ fontSize: '0.7rem', color: '#64748b' }}>
+                  Default: <strong>{role === 'Admin' ? 'admin@9842' : '1234'}</strong>
+                </span>
               </div>
               <div style={{ position: 'relative' }}>
                 <Lock size={16} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
                 <input
                   type="password"
-                  value={pin}
-                  onChange={e => { setPin(e.target.value); setError(''); }}
-                  placeholder="Enter 4-digit PIN"
+                  value={password}
+                  onChange={e => { setPassword(e.target.value); setError(''); }}
+                  placeholder={role === 'Admin' ? 'Enter Admin Password' : 'Enter 4-digit PIN'}
                   autoFocus
                   style={{
                     width: '100%',
                     padding: '0.6rem 0.75rem 0.6rem 2.25rem',
-                    border: '1px solid #cbd5e1',
+                    border: error ? '1px solid #dc2626' : '1px solid #cbd5e1',
                     borderRadius: '6px',
                     fontSize: '0.875rem',
-                    letterSpacing: '0.1em'
+                    letterSpacing: '0.08em'
                   }}
                 />
               </div>
-              {error && <div style={{ color: '#dc2626', fontSize: '0.75rem', marginTop: '0.35rem' }}>{error}</div>}
-            </div>
-
-            <div style={{ marginBottom: '1.25rem', display: 'flex', gap: '0.5rem' }}>
-              <button
-                type="button"
-                onClick={() => setRole('Admin')}
-                style={{
-                  flex: 1,
-                  padding: '0.45rem',
-                  borderRadius: '6px',
-                  border: role === 'Admin' ? '2px solid #b91c1c' : '1px solid #cbd5e1',
-                  background: role === 'Admin' ? '#fef2f2' : '#ffffff',
-                  color: role === 'Admin' ? '#b91c1c' : '#475569',
-                  fontWeight: 600,
-                  fontSize: '0.775rem',
-                  cursor: 'pointer'
-                }}
-              >
-                Admin Access
-              </button>
-              <button
-                type="button"
-                onClick={() => setRole('Staff')}
-                style={{
-                  flex: 1,
-                  padding: '0.45rem',
-                  borderRadius: '6px',
-                  border: role === 'Staff' ? '2px solid #b91c1c' : '1px solid #cbd5e1',
-                  background: role === 'Staff' ? '#fef2f2' : '#ffffff',
-                  color: role === 'Staff' ? '#b91c1c' : '#475569',
-                  fontWeight: 600,
-                  fontSize: '0.775rem',
-                  cursor: 'pointer'
-                }}
-              >
-                Billing Staff
-              </button>
+              {error && (
+                <div style={{
+                  color: '#dc2626',
+                  fontSize: '0.75rem',
+                  marginTop: '0.4rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.3rem',
+                  fontWeight: 600
+                }}>
+                  <AlertCircle size={13} /> {error}
+                </div>
+              )}
             </div>
 
             <button
@@ -196,66 +266,46 @@ export const LoginModal: React.FC<Props> = ({ onLogin, supabaseConnected }) => {
               style={{
                 width: '100%',
                 padding: '0.7rem',
-                background: '#b91c1c',
+                background: role === 'Admin' ? '#b91c1c' : '#0284c7',
                 color: '#ffffff',
                 border: 'none',
                 borderRadius: '6px',
                 fontWeight: 700,
                 fontSize: '0.9rem',
                 cursor: 'pointer',
-                boxShadow: '0 4px 6px -1px rgba(185, 28, 28, 0.3)',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.2)',
                 transition: 'background 0.15s'
               }}
             >
-              Secure Login
+              Log in as {role}
             </button>
           </form>
 
-          {/* Quick Bypass Demo Buttons */}
+          {/* Quick Demo Assist */}
           <div style={{
             marginTop: '1.25rem',
-            paddingTop: '1.25rem',
+            paddingTop: '1rem',
             borderTop: '1px dashed #e2e8f0',
             textAlign: 'center'
           }}>
-            <p style={{ fontSize: '0.725rem', color: '#64748b', marginBottom: '0.5rem' }}>
-              Instant Quick Access:
+            <p style={{ fontSize: '0.725rem', color: '#64748b', marginBottom: '0.4rem' }}>
+              Distinct Credentials (Cannot be used interchangeably):
             </p>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <button
-                type="button"
-                onClick={() => handleQuickLogin('Admin')}
-                style={{
-                  flex: 1,
-                  padding: '0.45rem',
-                  background: '#f1f5f9',
-                  border: '1px solid #cbd5e1',
-                  borderRadius: '4px',
-                  fontSize: '0.75rem',
-                  color: '#334155',
-                  fontWeight: 600,
-                  cursor: 'pointer'
-                }}
-              >
-                Enter as Admin
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickLogin('Staff')}
-                style={{
-                  flex: 1,
-                  padding: '0.45rem',
-                  background: '#f1f5f9',
-                  border: '1px solid #cbd5e1',
-                  borderRadius: '4px',
-                  fontSize: '0.75rem',
-                  color: '#334155',
-                  fontWeight: 600,
-                  cursor: 'pointer'
-                }}
-              >
-                Enter as Staff
-              </button>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-around',
+              background: '#f8fafc',
+              border: '1px solid #e2e8f0',
+              borderRadius: '6px',
+              padding: '0.5rem',
+              fontSize: '0.725rem'
+            }}>
+              <div>
+                <span style={{ color: '#b91c1c', fontWeight: 700 }}>Admin:</span> <code>admin@9842</code>
+              </div>
+              <div style={{ borderLeft: '1px solid #cbd5e1', paddingLeft: '0.75rem' }}>
+                <span style={{ color: '#0284c7', fontWeight: 700 }}>Staff PIN:</span> <code>1234</code>
+              </div>
             </div>
           </div>
         </div>

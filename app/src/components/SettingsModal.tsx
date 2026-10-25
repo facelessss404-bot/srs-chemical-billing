@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CompanyProfile, SupabaseConfig } from '../types';
 import { getStoredSupabaseConfig, saveStoredSupabaseConfig, testSupabaseConnection } from '../services/supabase';
-import { Building2, Landmark, Cloud, Download, Upload, CheckCircle2, AlertCircle, Copy, X } from 'lucide-react';
+import { Building2, Landmark, Cloud, Download, Upload, CheckCircle2, AlertCircle, Copy, X, KeyRound } from 'lucide-react';
 
 interface Props {
   company: CompanyProfile;
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const SettingsModal: React.FC<Props> = ({ company, onSaveCompany, onClose, onRefreshData }) => {
-  const [activeTab, setActiveTab] = useState<'Company' | 'Bank' | 'Cloud' | 'Backup'>('Company');
+  const [activeTab, setActiveTab] = useState<'Company' | 'Bank' | 'Security' | 'Cloud' | 'Backup'>('Company');
   const [formCompany, setFormCompany] = useState<CompanyProfile>({ ...company });
 
   // Cloud Config state
@@ -164,6 +164,7 @@ CREATE POLICY "Public Read/Write Sequences" ON public.sequences FOR ALL USING (t
           {[
             { id: 'Company', label: 'Company Profile', icon: Building2 },
             { id: 'Bank', label: 'Bank Details', icon: Landmark },
+            { id: 'Security', label: 'Logins & Security', icon: KeyRound },
             { id: 'Cloud', label: 'Supabase Cloud DB', icon: Cloud },
             { id: 'Backup', label: 'Backup & Restore', icon: Download }
           ].map(t => {
@@ -410,6 +411,100 @@ CREATE POLICY "Public Read/Write Sequences" ON public.sequences FOR ALL USING (t
                   }}
                 >
                   Save Bank Details
+                </button>
+              </div>
+            </form>
+          )}
+
+          {activeTab === 'Security' && (
+            <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <div style={{
+                background: '#f8fafc',
+                border: '1px solid #cbd5e1',
+                borderRadius: '6px',
+                padding: '0.85rem'
+              }}>
+                <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.25rem' }}>
+                  Role-Based Security & Passwords
+                </h4>
+                <p style={{ fontSize: '0.75rem', color: '#64748b', lineHeight: 1.4 }}>
+                  Maintain separate, independent passwords for the Owner/Admin and Counter Staff. Staff credentials cannot be used to access administrative controls, edit bank details, or delete bills.
+                </p>
+              </div>
+
+              <div style={{
+                background: '#fef2f2',
+                border: '1px solid #fecaca',
+                borderRadius: '6px',
+                padding: '1rem'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.4rem' }}>
+                  <span style={{ fontWeight: 800, color: '#b91c1c', fontSize: '0.9rem' }}>🛡️ Admin / Owner Password</span>
+                </div>
+                <p style={{ fontSize: '0.75rem', color: '#7f1d1d', marginBottom: '0.65rem' }}>
+                  Allows full access to company settings, Canara bank accounts, deleting records, changing prices, and cloud sync.
+                </p>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: '0.2rem' }}>
+                    Admin Password
+                  </label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={formCompany.admin_password || 'admin@9842'}
+                    onChange={e => setFormCompany({ ...formCompany, admin_password: e.target.value })}
+                    style={{ maxWidth: '320px', fontFamily: 'monospace', fontWeight: 700 }}
+                  />
+                  <span style={{ fontSize: '0.7rem', color: '#64748b', display: 'block', marginTop: '0.2rem' }}>
+                    Default: <code>admin@9842</code>
+                  </span>
+                </div>
+              </div>
+
+              <div style={{
+                background: '#f0fdf4',
+                border: '1px solid #bbf7d0',
+                borderRadius: '6px',
+                padding: '1rem'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.4rem' }}>
+                  <span style={{ fontWeight: 800, color: '#166534', fontSize: '0.9rem' }}>🧾 Billing Staff Counter PIN</span>
+                </div>
+                <p style={{ fontSize: '0.75rem', color: '#14532d', marginBottom: '0.65rem' }}>
+                  Used by counter operators for daily billing and printing. Cannot delete past records or modify bank details.
+                </p>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: '0.2rem' }}>
+                    Staff PIN (4 Digits)
+                  </label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    maxLength={10}
+                    value={formCompany.staff_pin || '1234'}
+                    onChange={e => setFormCompany({ ...formCompany, staff_pin: e.target.value })}
+                    style={{ maxWidth: '200px', fontFamily: 'monospace', fontWeight: 700, letterSpacing: '0.1em' }}
+                  />
+                  <span style={{ fontSize: '0.7rem', color: '#64748b', display: 'block', marginTop: '0.2rem' }}>
+                    Default: <code>1234</code>
+                  </span>
+                </div>
+              </div>
+
+              <div style={{ textAlign: 'right', marginTop: '0.5rem' }}>
+                <button
+                  type="submit"
+                  style={{
+                    padding: '0.55rem 1.25rem',
+                    background: '#b91c1c',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '4px',
+                    fontWeight: 700,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Save Passwords & Security Settings
                 </button>
               </div>
             </form>

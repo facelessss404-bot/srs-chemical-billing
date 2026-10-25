@@ -142,6 +142,7 @@ export const App: React.FC = () => {
       <LoginModal
         onLogin={handleLogin}
         supabaseConnected={supabaseConnected}
+        companyProfile={companyProfile}
       />
     );
   }

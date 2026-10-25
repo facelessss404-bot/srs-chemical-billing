@@ -451,13 +451,11 @@ CREATE POLICY "Public Read/Write Sequences" ON public.sequences FOR ALL USING (t
                   <input
                     type="text"
                     className="form-input"
-                    value={formCompany.admin_password || 'admin@9842'}
+                    value={formCompany.admin_password || ''}
+                    placeholder="Enter Admin Password"
                     onChange={e => setFormCompany({ ...formCompany, admin_password: e.target.value })}
                     style={{ maxWidth: '320px', fontFamily: 'monospace', fontWeight: 700 }}
                   />
-                  <span style={{ fontSize: '0.7rem', color: '#64748b', display: 'block', marginTop: '0.2rem' }}>
-                    Default: <code>admin@9842</code>
-                  </span>
                 </div>
               </div>
 
@@ -481,13 +479,11 @@ CREATE POLICY "Public Read/Write Sequences" ON public.sequences FOR ALL USING (t
                     type="text"
                     className="form-input"
                     maxLength={10}
-                    value={formCompany.staff_pin || '1234'}
+                    value={formCompany.staff_pin || ''}
+                    placeholder="Enter Staff PIN"
                     onChange={e => setFormCompany({ ...formCompany, staff_pin: e.target.value })}
                     style={{ maxWidth: '200px', fontFamily: 'monospace', fontWeight: 700, letterSpacing: '0.1em' }}
                   />
-                  <span style={{ fontSize: '0.7rem', color: '#64748b', display: 'block', marginTop: '0.2rem' }}>
-                    Default: <code>1234</code>
-                  </span>
                 </div>
               </div>
 

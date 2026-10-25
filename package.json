@@ -1,0 +1,15 @@
+{
+  "name": "sbr-chemicals-billing-suite",
+  "version": "1.0.0",
+  "description": "S.B.R. Chemicals & Oils - GST Billing & Cloud ERP Suite",
+  "scripts": {
+    "start": "node server/src/server.js",
+    "dev:server": "node server/src/server.js",
+    "dev:app": "npm.cmd --prefix app run dev",
+    "build:app": "npm.cmd --prefix app run build",
+    "seed": "node server/src/seed.js"
+  },
+  "keywords": ["gst", "billing", "erp", "sbr-chemicals"],
+  "author": "IdeasEternal Technologies",
+  "license": "UNLICENSED"
+}

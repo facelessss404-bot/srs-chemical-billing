@@ -1,0 +1,20 @@
+# Reference folder (DO NOT DEPLOY)
+Client_5_gst_billing/
+
+# Dependencies
+node_modules/
+app/node_modules/
+server/node_modules/
+
+# Local databases & logs
+server/data/*.db
+server/data/*.db-wal
+server/data/*.db-shm
+*.log
+
+# Environment files
+.env.local
+
+# OS Files
+Thumbs.db
+.DS_Store
